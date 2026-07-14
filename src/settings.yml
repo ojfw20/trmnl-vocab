@@ -1,0 +1,14 @@
+#
+# Docs: https://help.trmnl.com/en/articles/10542599-importing-and-exporting-private-plugins
+#
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+framework_version: latest
+polling_url: 'https://raw.githubusercontent.com/ojfw20/trmnl-vocab/main/words.json'
+polling_headers: ''
+name: Vocabulary
+refresh_interval: 5

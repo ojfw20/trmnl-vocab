@@ -1,0 +1,24 @@
+# Local preview config for trmnlp.
+#   Offline:  the `variables.words` sample below is used to render the views.
+#   Live:     comment out `variables` to fetch the real polling_url in settings.yml.
+watch:
+  - .trmnlp.yml
+  - src
+
+custom_fields: {}
+
+variables:
+  trmnl: {}
+  words:
+    - {word: "petrichor", phonetic: "/ˈpɛtɹɪkɚ/", type: "n.", definition: "The distinctive scent that accompanies the first rain after a long, warm, dry spell."}
+    - {word: "sonder", phonetic: "", type: "n.", definition: "The realisation that each passer-by is living a life as vivid and complex as your own."}
+    - {word: "sesquipedalian", phonetic: "/ˌsɛskwɪpɪˈdeɪliən/", type: "adj.", definition: "Given to using long words."}
+    - {word: "mamihlapinatapai", phonetic: "", type: "n.", definition: "A wordless look between two people each hoping the other will act."}
+    - {word: "defenestrate", phonetic: "/dɪˈfɛnɪstɹeɪt/", type: "v.", definition: "To eject or throw someone or something from a window."}
+    - {word: "ubiquitous", phonetic: "/juːˈbɪkwɪtəs/", type: "adj.", definition: "Being everywhere at once; omnipresent.", example: "Smartphones are now ubiquitous."}
+    - {word: "susurrus", phonetic: "/suːˈsʌɹəs/", type: "n.", definition: "A whispering or rustling sound."}
+    - {word: "quixotic", phonetic: "/kwɪkˈsɒtɪk/", type: "adj.", definition: "Exceedingly idealistic; unrealistic and impractical."}
+    - {word: "ennui", phonetic: "/ɒnˈwiː/", type: "n.", definition: "A feeling of listlessness and weariness from boredom."}
+    - {word: "halcyon", phonetic: "/ˈhalsɪən/", type: "adj.", definition: "Idyllically calm and peaceful; happy and prosperous."}
+    - {word: "obsequious", phonetic: "/əbˈsiːkwɪəs/", type: "adj.", definition: "Obedient or attentive to an excessive or servile degree."}
+    - {word: "iridescent", phonetic: "/ˌɪrɪˈdɛs(ə)nt/", type: "adj.", definition: "Showing luminous colours that seem to change when seen from different angles."}

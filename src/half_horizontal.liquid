@@ -1,0 +1,14 @@
+{%- comment -%} Pick a pseudo-random word each render: nanoseconds of "now" mod list size. {%- endcomment -%}
+{% assign n = words | size %}
+{% assign idx = "now" | date: "%N" | modulo: n %}
+{% assign w = words | first %}
+{% for item in words %}{% if forloop.index0 == idx %}{% assign w = item %}{% break %}{% endif %}{% endfor %}
+<div class="layout layout--col gap--small">
+  <span class="value value--large" data-clamp="1">{{ w.word }}</span>
+  {% if w.phonetic != blank or w.type != blank %}<span class="label">{% if w.phonetic != blank %}{{ w.phonetic }}{% endif %}{% if w.phonetic != blank and w.type != blank %} &middot; {% endif %}{{ w.type }}</span>{% endif %}
+  <span class="description" data-clamp="2">{{ w.definition }}</span>
+</div>
+
+<div class="title_bar">
+  <span class="title">Vocabulary</span>
+</div>

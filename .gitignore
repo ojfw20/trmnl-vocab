@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+build.out
+build.log
+_build/
+*.bak
