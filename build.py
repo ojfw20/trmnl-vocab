@@ -73,11 +73,11 @@ def score(cand: dict, word: str) -> float:
     return s
 
 
-def select_best(meanings: list):
+def select_best(meanings: list, word: str):
     if not meanings:
         return None
     best = max(range(len(meanings)),
-               key=lambda i: (score(meanings[i], meanings[i]["word"]), -i))
+               key=lambda i: (score(meanings[i], word), -i))
     return meanings[best]
 
 
@@ -95,7 +95,8 @@ def api_lookup(word: str) -> dict:
             if e.code == 404:
                 return {"miss": True}
             if e.code in (429, 500, 502, 503, 504):
-                wait = int(e.headers.get("Retry-After", 0)) or delay
+                ra = e.headers.get("Retry-After", "")
+                wait = int(ra) if ra.isdigit() else delay
                 print(f"  … {e.code} on {word}, waiting {wait}s", file=sys.stderr)
                 time.sleep(wait)
                 delay = min(delay * 2, 60)
@@ -108,6 +109,8 @@ def api_lookup(word: str) -> dict:
     else:
         raise RuntimeError(f"gave up on {word} after retries (rerun to resume from cache)")
 
+    if not isinstance(data, list) or not data:
+        return {"miss": True}
     entry = data[0]
     phonetic = entry.get("phonetic") or ""
     if not phonetic:
@@ -165,9 +168,7 @@ def main():
                 definition, pos, example = clean_def(inline_def), inline_type or "", ""
             else:
                 cands = [] if raw.get("miss") else raw.get("meanings", [])
-                for c in cands:
-                    c["word"] = word
-                best = select_best(cands)
+                best = select_best(cands, word)
                 if not best:
                     misses.append(word)
                     continue

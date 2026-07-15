@@ -33,13 +33,17 @@ def main():
     rng.shuffle(pool)
 
     chosen = []
+    wrap = len('{"words":[]}'.encode("utf-8"))
+    body = 0
     for w in pool:
         if len(chosen) >= args.max:
             break
-        trial = chosen + [w]
-        if len(minified(trial).encode("utf-8")) > args.budget:
+        enc = len(json.dumps(w, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+        add = enc + (1 if chosen else 0)  # comma separator after the first entry
+        if wrap + body + add > args.budget:
             continue  # skip this one, a shorter later entry may still fit
-        chosen = trial
+        chosen.append(w)
+        body += add
 
     chosen.sort(key=lambda w: w["word"].lower())  # stable order -> readable diffs
     blob = minified(chosen)
