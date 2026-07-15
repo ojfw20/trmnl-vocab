@@ -11,7 +11,7 @@ The stock Word of the Day plugin is locked to refresh once a day. This gets roun
 that with a plugin that picks a new word on every render:
 
 - `words.json` is a flat list of words (definition, pronunciation, part of speech),
-  hosted on GitHub Pages/raw and polled by TRMNL every 5 minutes.
+  served from GitHub raw and polled by TRMNL every 5 minutes.
 - The Liquid markup picks a pseudo-random entry each render, keyed off the
   nanoseconds of the current time, so a new word appears on every refresh.
 - TRMNL rejects a polling response over ~100 KB, so the live `words.json` is a
@@ -59,7 +59,8 @@ trmnlp push                   # creates/updates the "Vocabulary" private plugin
 Or set it up by hand in the TRMNL web UI:
 
 1. **Plugins → Private Plugin → Add new.** Name it `Vocabulary`, strategy **Polling**.
-2. **Polling URL:** the raw URL of `words.json` (verb GET, no headers). Save.
+2. **Polling URL:** `https://raw.githubusercontent.com/ojfw20/trmnl-vocab/main/words.json`
+   (verb GET, no headers). Save.
 3. **Edit Markup:** paste the contents of `src/quadrant.liquid` into the Quadrant
    tab (and `full`/`half_*` into their tabs if you want them).
 4. **Refresh rate:** 5 minutes (needs TRMNL+; the free floor is 15).
