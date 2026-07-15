@@ -33,3 +33,5 @@ jobs:
           git add words.json
           git commit -m "Reshuffle live word set"
           git push
+
+# (registered via push event)
