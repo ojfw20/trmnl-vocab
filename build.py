@@ -26,6 +26,7 @@ HERE = Path(__file__).parent
 SEED = HERE / "seed.txt"
 OUT = HERE / "words.master.json"
 CACHE = HERE / "cache.json"
+EXAMPLES = HERE / "examples.txt"
 API = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
 POS = {
@@ -145,10 +146,37 @@ def parse_seed():
                parts[2] if len(parts) > 2 and parts[2] else None)
 
 
+def parse_examples():
+    """Read examples.txt: `word | example | optional def | optional type`.
+
+    The example is always applied; a definition and type override the
+    API/seed value when present (used to fix a handful of wrong-sense entries).
+    """
+    ex = {}
+    if not EXAMPLES.exists():
+        return ex
+    for raw in EXAMPLES.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = [p.strip() for p in line.split("|")]
+        if len(parts) < 2 or not parts[1]:
+            continue
+        entry = {"example": parts[1]}
+        if len(parts) > 2 and parts[2]:
+            entry["definition"] = parts[2]
+        if len(parts) > 3 and parts[3]:
+            entry["type"] = parts[3]
+        ex[parts[0].lower()] = entry
+    return ex
+
+
 def main():
     cache = json.loads(CACHE.read_text(encoding="utf-8")) if CACHE.exists() else {}
     seed = list(parse_seed())
-    print(f"Seed: {len(seed)} words | cache: {len(cache)}", file=sys.stderr)
+    examples = parse_examples()
+    print(f"Seed: {len(seed)} words | cache: {len(cache)} | examples: {len(examples)}",
+          file=sys.stderr)
 
     words, misses, new = [], [], 0
     try:
@@ -176,13 +204,22 @@ def main():
                 pos = POS.get(best["pos"], best["pos"])
                 example = best.get("example", "")
 
+            # examples.txt overrides: example always; definition/type when given
+            ex = examples.get(key)
+            if ex:
+                example = ex["example"]
+                if ex.get("definition"):
+                    definition = clean_def(ex["definition"])
+                if ex.get("type"):
+                    pos = ex["type"]
+
             if not definition:
                 misses.append(word)
                 continue
             entry = {"word": word, "type": pos, "definition": definition}
             if phonetic:
                 entry["phonetic"] = phonetic
-            if example and len(example) <= 90:
+            if example and len(example) <= 120:
                 entry["example"] = example
             words.append(entry)
     finally:

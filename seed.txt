@@ -219,7 +219,6 @@ avaricious
 covetous
 parsimonious
 penurious
-niggardly
 prodigal
 profligate
 spendthrift

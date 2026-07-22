@@ -7,7 +7,8 @@
 <div class="layout layout--col gap--small">
   <span class="title title--large" data-clamp="1">{{ w.word }}</span>
   {% if w.phonetic != blank or w.type != blank %}<span class="label">{% if w.phonetic != blank %}{{ w.phonetic }}{% endif %}{% if w.phonetic != blank and w.type != blank %} &middot; {% endif %}{{ w.type }}</span>{% endif %}
-  <span class="description" data-clamp="3">{{ w.definition }}</span>
+  <span class="description" data-clamp="2">{{ w.definition }}</span>
+  {% if w.example != blank %}<span class="description" data-clamp="2" style="font-style:italic;">&ldquo;{{ w.example }}&rdquo;</span>{% endif %}
 </div>
 
 <div class="title_bar">
